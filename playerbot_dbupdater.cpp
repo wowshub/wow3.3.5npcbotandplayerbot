@@ -77,9 +77,15 @@ std::string DBUpdater<LoginDatabaseConnection>::GetTableName()
 }
 
 template<>
+std::string DBUpdater<LoginDatabaseConnection>::GetSourceDirectory()
+{
+    return BuiltInConfig::GetSourceDirectory();
+}
+
+template<>
 std::string DBUpdater<LoginDatabaseConnection>::GetBaseFilesDirectory()
 {
-    return BuiltInConfig::GetSourceDirectory() + "/data/sql/base/db_auth/";
+    return DBUpdater<LoginDatabaseConnection>::GetSourceDirectory() + "/data/sql/base/db_auth/";
 }
 
 template<>
@@ -92,7 +98,7 @@ bool DBUpdater<LoginDatabaseConnection>::IsEnabled(uint32 const updateMask)
 template<>
 std::string DBUpdater<LoginDatabaseConnection>::GetDBModuleName()
 {
-    return "db-auth";
+    return "auth";
 }
 
 // World Database
@@ -109,9 +115,15 @@ std::string DBUpdater<WorldDatabaseConnection>::GetTableName()
 }
 
 template<>
+std::string DBUpdater<WorldDatabaseConnection>::GetSourceDirectory()
+{
+    return BuiltInConfig::GetSourceDirectory();
+}
+
+template<>
 std::string DBUpdater<WorldDatabaseConnection>::GetBaseFilesDirectory()
 {
-    return BuiltInConfig::GetSourceDirectory() + "/data/sql/base/db_world/";
+    return DBUpdater<WorldDatabaseConnection>::GetSourceDirectory() + "/data/sql/base/db_world/";
 }
 
 template<>
@@ -124,7 +136,7 @@ bool DBUpdater<WorldDatabaseConnection>::IsEnabled(uint32 const updateMask)
 template<>
 std::string DBUpdater<WorldDatabaseConnection>::GetDBModuleName()
 {
-    return "db-world";
+    return "world";
 }
 
 // Character Database
@@ -141,9 +153,15 @@ std::string DBUpdater<CharacterDatabaseConnection>::GetTableName()
 }
 
 template<>
+std::string DBUpdater<CharacterDatabaseConnection>::GetSourceDirectory()
+{
+    return BuiltInConfig::GetSourceDirectory();
+}
+
+template<>
 std::string DBUpdater<CharacterDatabaseConnection>::GetBaseFilesDirectory()
 {
-    return BuiltInConfig::GetSourceDirectory() + "/data/sql/base/db_characters/";
+    return DBUpdater<CharacterDatabaseConnection>::GetSourceDirectory() + "/data/sql/base/db_characters/";
 }
 
 template<>
@@ -176,7 +194,7 @@ std::string DBUpdater<PlayerbotsDatabaseConnection>::GetTableName()
 template<>
 std::string DBUpdater<PlayerbotsDatabaseConnection>::GetSourceDirectory()
 {
-    return "modules/mod-playerbots"; // Adjusted for local path relative to build or source
+    return BuiltInConfig::GetSourceDirectory() + "/modules/mod-playerbots";
 }
 
 template<>
@@ -264,7 +282,7 @@ bool DBUpdater<T>::Update(DatabaseWorkerPool<T>& pool, std::string_view modulesL
 
     LOG_INFO("sql.updates", "Updating {} database...", DBUpdater<T>::GetTableName());
 
-    Path const sourceDirectory(BuiltInConfig::GetSourceDirectory());
+    Path const sourceDirectory(DBUpdater<T>::GetSourceDirectory());
 
     if (!is_directory(sourceDirectory))
     {
@@ -339,7 +357,7 @@ bool DBUpdater<T>::Update(DatabaseWorkerPool<T>& pool, std::vector<std::string> 
         return false;
     }
 
-    Path const sourceDirectory(BuiltInConfig::GetSourceDirectory());
+    Path const sourceDirectory(DBUpdater<T>::GetSourceDirectory());
     if (!is_directory(sourceDirectory))
     {
         return false;

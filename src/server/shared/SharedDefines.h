@@ -18,6 +18,8 @@
 #ifndef ACORE_SHAREDDEFINES_H
 #define ACORE_SHAREDDEFINES_H
 
+#define MOD_PLAYERBOTS 1
+
 #include "DBCEnums.h"
 #include "Define.h"
 #include "EnumFlag.h"

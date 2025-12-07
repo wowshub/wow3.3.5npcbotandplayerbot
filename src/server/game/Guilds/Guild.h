@@ -691,6 +691,8 @@ public:
 
     bool SetName(std::string_view const& name);
 
+    bool HasRankRight(Player* player, uint32 right) const { return _HasRankRight(player, right); }
+
     // Handle client commands
     void HandleRoster(WorldSession* session);
     void HandleQuery(WorldSession* session);

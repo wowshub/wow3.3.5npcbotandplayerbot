@@ -53,8 +53,8 @@ INSTALLER_PULL_FROM=
 #  CCOMPILERC="/usr/bin/gcc"
 #  CCOMPILERCXX="/usr/bin/g++"
 #
-CCOMPILERC="/usr/bin/clang"
-CCOMPILERCXX="/usr/bin/clang++"
+CCOMPILERC="/usr/bin/gcc"
+CCOMPILERCXX="/usr/bin/g++"
 
 # how many thread must be used for compilation ( leave zero to use all available )
 MTHREADS=${MTHREADS:-0}

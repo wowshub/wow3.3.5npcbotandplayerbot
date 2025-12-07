@@ -1090,6 +1090,8 @@ void World::Update(uint32 diff)
 {
     METRIC_TIMER("world_update_time_total");
 
+    ProcessQueryHolderCallbacks();
+
     ///- Update the game time and check for shutdown time
     _UpdateGameTime();
     Seconds currentGameTime = GameTime::GetGameTime();
@@ -1167,6 +1169,8 @@ void World::Update(uint32 diff)
         METRIC_TIMER("world_update_time", METRIC_TAG("type", "Reset guild cap"));
         ResetGuildCap();
     }
+
+    sScriptMgr->OnPlayerbotUpdate(diff);
 
     {
         // pussywizard: handle expired auctions, auctions expired when realm was offline are also handled here (not during loading when many required things aren't loaded yet)

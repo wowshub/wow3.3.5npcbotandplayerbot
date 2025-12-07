@@ -40,7 +40,22 @@ class Creature;
 class GameObject;
 class InstanceSave;
 class Item;
-class LoginQueryHolder;
+#include "QueryHolder.h"
+
+class LoginQueryHolder : public CharacterDatabaseQueryHolder
+{
+private:
+    uint32 m_accountId;
+    ObjectGuid m_guid;
+public:
+    LoginQueryHolder(uint32 accountId, ObjectGuid guid)
+        : m_accountId(accountId), m_guid(guid) { }
+
+    ObjectGuid GetGuid() const { return m_guid; }
+    uint32 GetAccountId() const { return m_accountId; }
+    bool Initialize();
+};
+
 class LoadPetFromDBQueryHolder;
 class Object;
 class Pet;
@@ -303,12 +318,16 @@ public:
 
 // Proxy structure to contain data passed to callback function,
 // only to prevent bloating the parameter list
-class CharacterCreateInfo
+struct CharacterCreateInfo
 {
     friend class WorldSession;
     friend class Player;
 
-protected:
+    CharacterCreateInfo() = default;
+
+    CharacterCreateInfo(std::string name, uint8 race, uint8 class_, uint8 gender, uint8 skin, uint8 face, uint8 hairStyle, uint8 hairColor, uint8 facialHair, uint8 outfitId = 0)
+        : Name(std::move(name)), Race(race), Class(class_), Gender(gender), Skin(skin), Face(face), HairStyle(hairStyle), HairColor(hairColor), FacialHair(facialHair), OutfitId(outfitId) { }
+
     /// User specified variables
     std::string Name;
     uint8 Race = 0;
@@ -470,6 +489,7 @@ public:
     bool DisallowHyperlinksAndMaybeKick(std::string_view str);
 
     void QueuePacket(WorldPacket* new_packet);
+    LockedQueue<WorldPacket*>& GetPacketQueue() { return _recvQueue; }
     bool Update(uint32 diff, PacketFilter& updater);
 
     /// Handle the authentication waiting queue (to be completed)

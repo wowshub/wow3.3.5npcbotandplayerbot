@@ -19261,6 +19261,7 @@ void Unit::Kill(Unit* killer, Unit* victim, bool durabilityLoss, WeaponAttackTyp
             }
         }
 
+        sScriptMgr->OnPlayerbotCheckKillTask(player, victim);
         player->RewardPlayerAndGroupAtKill(victim, false);
     }
 

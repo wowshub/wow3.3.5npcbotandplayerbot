@@ -23,6 +23,7 @@
 #define __WORLD_H
 
 #include "DatabaseEnvFwd.h"
+#include "DatabaseEnv.h"
 #include "IWorld.h"
 #include "LockedQueue.h"
 #include "ObjectGuid.h"
@@ -239,7 +240,11 @@ public:
     [[nodiscard]] std::string const& GetRealmName() const override { return _realmName; } // pussywizard
     void SetRealmName(std::string name) override { _realmName = name; } // pussywizard
 
+    SQLQueryHolderCallback& AddQueryHolderCallback(SQLQueryHolderCallback&& callback) { return _queryHolderProcessor.AddCallback(std::move(callback)); }
+
 protected:
+    AsyncCallbackProcessor<SQLQueryHolderCallback> _queryHolderProcessor;
+
     void _UpdateGameTime();
     // callback for UpdateRealmCharacters
     void _UpdateRealmCharCount(PreparedQueryResult resultCharCount,uint32 accountId);
@@ -303,6 +308,8 @@ private:
 
     void ProcessQueryCallbacks();
     QueryCallbackProcessor _queryProcessor;
+
+    void ProcessQueryHolderCallbacks() { _queryHolderProcessor.ProcessReadyCallbacks(); }
 
     /**
      * @brief Executed when a World Session is being finalized. Be it from a normal login or via queue popping.

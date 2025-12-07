@@ -59,6 +59,8 @@ enum ServerMessageType
     SERVER_MSG_RESTART_CANCELLED  = 5
 };
 
+#include "QueryHolder.h" // Added for SQLQueryHolderCallback
+
 class IWorld
 {
 public:
@@ -110,6 +112,8 @@ public:
     virtual void   ResetEventSeasonalQuests(uint16 event_id) = 0;
     [[nodiscard]] virtual std::string const& GetRealmName() const = 0;
     virtual void SetRealmName(std::string name) = 0;
+
+    virtual SQLQueryHolderCallback& AddQueryHolderCallback(SQLQueryHolderCallback&& callback) = 0;
 };
 
 #endif //AZEROTHCORE_IWORLD_H

@@ -472,6 +472,8 @@ namespace lfg
         void SetupGroupMember(ObjectGuid guid, ObjectGuid gguid);
         /// Return Lfg dungeon entry for given dungeon id
         uint32 GetLFGDungeonEntry(uint32 id);
+        
+        LFGDungeonData const* GetLFGDungeon(uint32 id);
 
         // cs_lfg
         /// Get current player roles
@@ -591,7 +593,6 @@ namespace lfg
         void SetCanOverrideRBState(ObjectGuid guid, bool val);
         void GetCompatibleDungeons(LfgDungeonSet& dungeons, LfgGuidSet const& players, LfgLockPartyMap& lockMap, bool isRDF = false);
         void _SaveToDB(ObjectGuid guid);
-        LFGDungeonData const* GetLFGDungeon(uint32 id);
 
         // Proposals
         void RemoveProposal(LfgProposalContainer::iterator itProposal, LfgUpdateType type);

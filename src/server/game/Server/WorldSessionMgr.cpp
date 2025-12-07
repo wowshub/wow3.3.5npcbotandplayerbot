@@ -159,6 +159,8 @@ void WorldSessionMgr::UpdateSessions(uint32 const diff)
             delete pSession;
         }
     }
+
+    sScriptMgr->OnPlayerbotLogoutBots();
 }
 
 /// Remove a given session

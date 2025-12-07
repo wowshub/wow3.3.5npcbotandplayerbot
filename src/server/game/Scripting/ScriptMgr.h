@@ -104,8 +104,29 @@ namespace Acore::ChatCommands
     SessionScript
     CollisionScript
     ArenaTeamScript
+    PlayerbotScript
 
 */
+
+class PlayerbotScript : public ScriptObject
+{
+protected:
+
+    PlayerbotScript(const char* name);
+
+public:
+    bool IsDatabaseBound() const { return false; }
+
+    [[nodiscard]] virtual bool OnPlayerbotCheckLFGQueue(lfg::Lfg5Guids const& /*guidsList*/) { return true; }
+    virtual void OnPlayerbotCheckKillTask(Player* /*player*/, Unit* /*victim*/) { }
+    virtual void OnPlayerbotCheckPetitionAccount(Player* /*player*/, bool& /*found*/) { }
+    [[nodiscard]] virtual bool OnPlayerbotCheckUpdatesToSend(Player* /*player*/) { return true; }
+    virtual void OnPlayerbotPacketSent(Player* /*player*/, WorldPacket const* /*packet*/) { }
+    virtual void OnPlayerbotUpdate(uint32 /*diff*/) { }
+    virtual void OnPlayerbotUpdateSessions(Player* /*player*/) { }
+    virtual void OnPlayerbotLogout(Player* /*player*/) { }
+    virtual void OnPlayerbotLogoutBots() { }
+};
 
 // Manages registration, loading, and execution of scripts.
 class ScriptMgr
@@ -706,6 +727,18 @@ public: /* TicketScript */
     void OnTicketClose(GmTicket* ticket);
     void OnTicketStatusUpdate(GmTicket* ticket);
     void OnTicketResolve(GmTicket* ticket);
+
+public: /* PlayerbotScript */
+    
+    bool OnPlayerbotCheckLFGQueue(lfg::Lfg5Guids const& guidsList);
+    void OnPlayerbotCheckKillTask(Player* player, Unit* victim);
+    void OnPlayerbotCheckPetitionAccount(Player* player, bool& found);
+    bool OnPlayerbotCheckUpdatesToSend(Player* player);
+    void OnPlayerbotPacketSent(Player* player, WorldPacket const* packet);
+    void OnPlayerbotUpdate(uint32 diff);
+    void OnPlayerbotUpdateSessions(Player* player);
+    void OnPlayerbotLogout(Player* player);
+    void OnPlayerbotLogoutBots();
 
 private:
     uint32 _scriptCount;

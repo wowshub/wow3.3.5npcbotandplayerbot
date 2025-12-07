@@ -255,6 +255,9 @@ ObjectGuid::LowType WorldSession::GetGuidLow() const
 /// Send a packet to the client
 void WorldSession::SendPacket(WorldPacket const* packet)
 {
+    if (sScriptMgr)
+        sScriptMgr->OnPlayerbotPacketSent(GetPlayer(), packet);
+
     if (!m_Socket)
         return;
 
@@ -537,6 +540,8 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
     //logout procedure should happen only in World::UpdateSessions() method!!!
     if (updater.ProcessUnsafe())
     {
+        sScriptMgr->OnPlayerbotUpdateSessions(GetPlayer());
+
         if (m_Socket && m_Socket->IsOpen() && _warden)
         {
             _warden->Update(diff);
@@ -634,6 +639,8 @@ void WorldSession::LogoutPlayer(bool save)
 
         if (ObjectGuid lguid = _player->GetLootGUID())
             DoLootRelease(lguid);
+
+        sScriptMgr->OnPlayerbotLogout(_player);
 
         ///- If the player just died before logging out, make him appear as a ghost
         //FIXME: logout must be delayed in case lost connection with client in time of combat
