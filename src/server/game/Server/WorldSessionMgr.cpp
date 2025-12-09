@@ -23,6 +23,7 @@
 #include "World.h"
 #include "WorldSession.h"
 #include "WorldSessionMgr.h"
+#include "ScriptMgr.h"
 
 WorldSessionMgr* WorldSessionMgr::Instance()
 {
